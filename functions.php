@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once("config.php");
 function db_conn() {
     /* データベースへ接続　*/

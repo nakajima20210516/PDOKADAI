@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /* データベース定義 */
 define('DB_HOST','localhost');
 define('DB_NAME','lesson1');
