@@ -92,53 +92,28 @@ try{
 </table>
 <p style="margin:8px;">
 <form action="" method="GET"> 
-
- 
-
-<div> 
-
-    <p>現在 <?php echo $page; ?> ページ目です。</p> 
-
-<?php 
-
-   $stmt = $dbh->prepare("SELECT COUNT(*) id FROM user WHERE name like :name"); 
-
-   $stmt->bindValue(':name', '%'.$name.'%', PDO::PARAM_STR); 
-
-   $stmt->execute(); 
-
-   $page_num = $stmt->fetchColumn(); 
-
-   // ページネーションの数を取得する 
-
-   $pagination = ceil($page_num / MAXITEM); 
-
-?> 
-
-<?php  
-
-   for ($x=1; $x <= $pagination ; $x++) { 
-
-      if($page == $x){ 
-
-      echo $x; 
-
-      } else { 
-
-          echo ' '; 
-
-           echo '<a href=?page='. $x. '&name='. $name.'>'. $x. '</a>'; 
-
-      echo ' '; 
-
-  } 
-
-   } 
-
-?> 
-</div>
-
- <div class="button-wrapper"> 
+    <div> 
+        <p>現在 <?php echo $page; ?> ページ目です。</p> 
+    <?php 
+       $stmt = $dbh->prepare("SELECT COUNT(*) id FROM user WHERE name like :name"); 
+       $stmt->bindValue(':name', '%'.$name.'%', PDO::PARAM_STR); 
+       $stmt->execute(); 
+       $page_num = $stmt->fetchColumn(); 
+       $pagination = ceil($page_num / MAXITEM); 
+    ?>
+    <?php  
+    for ($x=1; $x <= $pagination ; $x++) { 
+        if($page == $x){ 
+            echo $x; 
+        } else { 
+            echo ' ';
+            echo '<a href=?page='. $x. '&name='. $name.'>'. $x. '</a>'; 
+            echo ' '; 
+        } 
+    } 
+    ?> 
+    </div>
+    <div class="button-wrapper"> 
         <button type="button" onclick="history.back()">戻る</button> 
     </div> 
 </form>
