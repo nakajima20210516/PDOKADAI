@@ -1,36 +1,27 @@
 <?php
 require_once("functions.php");
-difine('MAXIMTEM' ,5);
+define('MAXITEM' ,5);
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    if(isset($_POST["name"])){
-        if(!empty($_POST["name"])) {
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if(isset($_POST["name"])){
             $name = htmlspecialchars($_POST["name"], ENT_QUOTES, 'UTF-8');
-             $page = 1;   // 初期表示は1ページ 
-
-} elseif($_SERVER['REQUEST_METHOD'] === 'GET'){  // ページネーション時 
-
-    if (isset($_GET['page'])) { 
-
-       $page = (int)$_GET['page'];
-
-       $name = htmlspecialchars($_GET["name"], ENT_QUOTES, 'UTF-8'); 
-
+        }
+            $page = 1;   // 初期表示は1ページ 
+    } elseif($_SERVER['REQUEST_METHOD'] === 'GET'){ 
+        if (isset($_GET['page'])) { 
+           $page = (int)$_GET['page'];
+           $name = htmlspecialchars($_GET["name"], ENT_QUOTES, 'UTF-8'); 
     } else { 
-
        $page = 1;
-
        $name = htmlspecialchars($_GET["name"], ENT_QUOTES, 'UTF-8'); 
-
     }
-if ($page > 1) { 
-    $start = ($page * MAXITEM) - MAXITEM;
+    if ($page > 1) { 
+        $start = ($page * MAXITEM) - MAXITEM;
     } else { 
         $start = 0;
     } 
 }
-}
-}
+
 $dbh = db_conn();
 $data = [];
 
@@ -38,6 +29,8 @@ try{
     $sql = "SELECT * FROM user WHERE name like :name LIMIT :start, :page";
     $stmt = $dbh->prepare($sql);
     $stmt->bindValue(':name', '%'.$name.'%', PDO::PARAM_STR);
+    $stmt->bindValue(':start', $start, PDO::PARAM_INT); 
+    $stmt->bindValue(':page', MAXITEM, PDO::PARAM_INT); 
     $stmt->execute();
     $count = 0;
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
